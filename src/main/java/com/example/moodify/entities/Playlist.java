@@ -1,5 +1,6 @@
 package com.example.moodify.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,13 +13,15 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Playlist {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // The following few annotations are inherited from Spring JPA.
+    @Id // This member will uniquely identify (PRIMARY KEY) the entity in the database.
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Determines how the unique ID will be generated. Designates one column to hold unique ID.
     private long id;
 
-    @Column(columnDefinition = "varchar(50)", unique = true)
+    @Column(columnDefinition = "varchar(50)", unique = true) // Playlist names are capped at 50 characters and must be unique.
     private String playlistName;
 
-    @Column(columnDefinition = "varchar(50)")
+    @Column(columnDefinition = "varchar(25)") // Don't currently know mood lengths, 25 seems decent for now.
     private String mood;
+
 }

@@ -27,7 +27,7 @@ public class Track {
     @ManyToMany(mappedBy = "trackslist", fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private Set<Playlist> playlists = new HashSet<>();
 
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "genreId", referencedColumnName = "id")
-//    private Genre genre;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "genreId", referencedColumnName = "id")
+    private Genre genre;
 }

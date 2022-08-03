@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "UserPlaylist")
@@ -24,4 +26,15 @@ public class Playlist {
     @Column(columnDefinition = "varchar(25)") // Don't currently know mood lengths, 25 seems decent for now.
     private String mood;
 
+    @ManyToOne // Relationship from playlists to users.
+    @JsonBackReference // Prevents infinite recursion when delivering JSON through a RESTful endpoint.
+    private User user;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinTable(
+            name = "PlaylistJoinLike",
+            joinColumns = {@JoinColumn(name = "playlistId")},
+            inverseJoinColumns = {@JoinColumn(name = "trackId")}
+    )
+    private Set<Track> trackslist = new HashSet<>();
 }

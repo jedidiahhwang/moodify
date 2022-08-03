@@ -1,11 +1,14 @@
 package com.example.moodify.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name="Users")
@@ -33,7 +36,18 @@ public class User {
     @Column
     private String password;
 
-    @OneToMany
+    /*
+        REVIEW THESE ANNOTATION PROPERTIES
+        mappedBy (required) - Field that owns the relationship. Required unless the relationship is unidirectional.
+        fetch (optional) - How will you be fetching the data? Lazily or Eagerly (default is EAGER)?
+            i. Eagerly will fetch all connected tables all at once (fetch all playlists)
+            ii. Lazily will fetch when needed (fetch the playlist when requested for)
+            SOURCE: https://stackoverflow.com/questions/2990799/difference-between-fetchtype-lazy-and-eager-in-java-persistence-api
+        cascade (optional) - Operations that must be cascaded to the target of the association.
+            i. MERGE will merge the existing data in the table with the data in my object (sync to database). Think of saving (loosely).
+            ii. PERSIST will create new records from the object in the database. Makes a transient instance persistent.
+     */
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     /*
         Why a @OneToMany relationship? What's the difference with @ManyToOne
 
@@ -43,6 +57,6 @@ public class User {
             bidirectional instead of unilateral. Supposedly this prevents a lot of side effects of table generation
             according to https://thorben-janssen.com/best-practices-many-one-one-many-associations-mappings/.
      */
-    @JsonBackReference // Prevents infinite recursion when passing JSON through RESTful API. Read into this.
-    private Playlist playlist;
+    @JsonManagedReference
+    private Set<Playlist> playlistSet = new HashSet<>();
 }

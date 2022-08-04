@@ -21,7 +21,7 @@ public class TrackDto implements Serializable {
     public TrackDto(Track trackObj) {
         if(trackObj.getId() != null &&
             trackObj.getTrackname() != null &&
-            trackObj.getSpotifyId() != null &&) {
+            trackObj.getSpotifyId() != null) {
                 this.id = trackObj.getId();
                 this.trackname = trackObj.getTrackname();
                 this.spotifyId = trackObj.getSpotifyId();

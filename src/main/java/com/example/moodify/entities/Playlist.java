@@ -18,7 +18,7 @@ public class Playlist {
     // The following few annotations are inherited from Spring JPA.
     @Id // This member will uniquely identify (PRIMARY KEY) the entity in the database.
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Determines how the unique ID will be generated. Designates one column to hold unique ID.
-    private long id;
+    private Long id;
 
     @Column(columnDefinition = "varchar(50)", unique = true) // Playlist names are capped at 50 characters and must be unique.
     private String playlistName;

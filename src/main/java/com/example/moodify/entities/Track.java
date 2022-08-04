@@ -16,7 +16,7 @@ import java.util.Set;
 public class Track {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(columnDefinition = "text")
     private String trackname;

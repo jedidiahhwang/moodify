@@ -1,5 +1,6 @@
 package com.example.moodify.entities;
 
+import com.example.moodify.dtos.TrackDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,4 +31,14 @@ public class Track {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "genreId", referencedColumnName = "id")
     private Genre genre;
+
+    public Track(TrackDto trackDto) {
+        if(trackDto.getId() != null &&
+                trackDto.getTrackname() != null &&
+                trackDto.getSpotifyId() != null) {
+            this.id = trackDto.getId();
+            this.trackname = trackDto.getTrackname();
+            this.spotifyId = trackDto.getSpotifyId();
+        }
+    }
 }

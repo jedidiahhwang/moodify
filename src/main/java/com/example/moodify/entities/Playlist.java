@@ -1,5 +1,6 @@
 package com.example.moodify.entities;
 
+import com.example.moodify.dtos.PlaylistDto;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -37,4 +38,12 @@ public class Playlist {
             inverseJoinColumns = {@JoinColumn(name = "trackId")}
     )
     private Set<Track> trackslist = new HashSet<>();
+
+    public Playlist(PlaylistDto playlistDto) {
+        if(playlistDto.getPlaylistName() != null &&
+            playlistDto.getMood() != null) {
+                this.playlistName = playlistDto.getPlaylistName();
+                this.mood = playlistDto.getMood();
+        }
+    }
 }

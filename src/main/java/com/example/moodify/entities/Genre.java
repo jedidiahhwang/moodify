@@ -1,5 +1,6 @@
 package com.example.moodify.entities;
 
+import com.example.moodify.dtos.GenreDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,4 +23,10 @@ public class Genre {
 
     @OneToOne(mappedBy = "genre")
     private Track track;
+
+    public Genre(GenreDto genreDto) {
+        if(genreDto.getGenre() != null) {
+            this.genre = genreDto.getGenre();
+        }
+    }
 }

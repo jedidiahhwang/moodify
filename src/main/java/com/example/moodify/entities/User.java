@@ -1,5 +1,6 @@
 package com.example.moodify.entities;
 
+import com.example.moodify.dtos.UserDto;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
@@ -59,4 +60,18 @@ public class User {
      */
     @JsonManagedReference
     private Set<Playlist> playlistSet = new HashSet<>();
+
+    public User(UserDto userDto) {
+        if(userDto.getUsername() != null &&
+            userDto.getFirstname() != null &&
+            userDto.getLastname() != null &&
+            userDto.getEmail() != null &&
+            userDto.getPassword() != null) {
+                this.username = userDto.getUsername();
+                this.firstname = userDto.getFirstname();
+                this.lastname = userDto.getLastname();
+                this.email = userDto.getEmail();
+                this.password = userDto.getPassword();
+        }
+    }
 }

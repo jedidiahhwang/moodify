@@ -1,9 +1,12 @@
 package com.example.moodify.controllers;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import se.michaelthelin.spotify.SpotifyApi;
 import se.michaelthelin.spotify.SpotifyHttpManager;
+import se.michaelthelin.spotify.requests.authorization.authorization_code.AuthorizationCodeUriRequest;
 
 import java.net.URI;
 
@@ -31,4 +34,30 @@ public class AuthController {
             .setClientSecret(clientSecret)
             .setRedirectUri(redirectUri)
             .build();
+
+
+    @GetMapping("/login")
+    /*
+        Spring needs to be explicitly told to format responses as JSON.
+
+        The reason we want to use the @ResponseBody annotation is it will automatically serialize the
+        the response into JSON and passed into the HttpResponse object (our protocol we're using for our
+        web applications). This makes accessing the data from the frontend much easier.
+    */
+    @ResponseBody
+    public String spotifyLogin() {
+        // From the wrapper. Formats the URI that will prompt the user to authorize with their Spotify account.
+        AuthorizationCodeUriRequest authorizationCodeUriRequest = spotifyApi.authorizationCodeUri()
+                // Refer to Spotify docs for the following scopes (cna interact with them).
+                .scope("user-read-private, user-read-email, user-top-read")
+                // Provides the dialog box from Spotify.
+                .show_dialog(true)
+                // Now build this URI.
+                .build();
+
+        // The URI has an execute() method that will return the formatted URI to our uri variable.
+        final URI uri = authorizationCodeUriRequest.execute();
+        // Make sure it's the right datatype.
+        return uri.toString();
+    }
 }

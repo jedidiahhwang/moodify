@@ -10,9 +10,10 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class UserServiceImplementation {
+public class UserServiceImplementation implements UserService {
     /*
         What is some business logic that you'd see for users of this application?
 
@@ -38,6 +39,7 @@ public class UserServiceImplementation {
         business logic.
 
     */
+    @Override
     @Transactional // Handles the persistence context and database transaction all together.
     public List<String> addUser(UserDto userDto) {
         List<String> response = new ArrayList<>();
@@ -51,4 +53,23 @@ public class UserServiceImplementation {
         return response;
     }
 
+
+    @Override
+    public List<String> userLogin(UserDto userDto) {
+        List<String> response = new ArrayList<>();
+
+        // Optionals help us avoid NullPointerExceptions. Optionals give the compiler a choice to accept it whether it's empty or not.
+        Optional<User> userOptional = userRepository.findByUsername(userDto.getUsername());
+        if(userOptional.isPresent()) {
+            if(passwordEncoder.matches(userDto.getPassword(), userOptional.get().getPassword())) {
+                response.add("User login successful");
+                response.add(String.valueOf(userOptional.get().getId()));
+            } else {
+                response.add("Username or password incorrect");
+            }
+        } else {
+            response.add("Username or password incorrect");
+        }
+        return response;
+    }
 }

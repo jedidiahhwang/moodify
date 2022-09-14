@@ -7,9 +7,11 @@ import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 import se.michaelthelin.spotify.model_objects.credentials.AuthorizationCodeCredentials;
 import se.michaelthelin.spotify.model_objects.specification.Artist;
 import se.michaelthelin.spotify.model_objects.specification.Paging;
+import se.michaelthelin.spotify.model_objects.specification.User;
 import se.michaelthelin.spotify.requests.authorization.authorization_code.AuthorizationCodeRequest;
 import se.michaelthelin.spotify.requests.authorization.authorization_code.AuthorizationCodeUriRequest;
 import se.michaelthelin.spotify.requests.data.personalization.simplified.GetUsersTopArtistsRequest;
+import se.michaelthelin.spotify.requests.data.users_profile.GetCurrentUsersProfileRequest;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -83,7 +85,7 @@ public class AuthController {
             System.out.println("Error: " + e.getMessage());
         }
 
-        response.sendRedirect("http://localhost:3000/top-artists");
+        response.sendRedirect("http://localhost:3000/current-user");
         return spotifyApi.getAccessToken();
     }
 
@@ -105,4 +107,19 @@ public class AuthController {
          return new Artist[0];
      }
 
+
+    @GetMapping(value="current-user-profile")
+    public User getCurrentUserProfile() {
+        final GetCurrentUsersProfileRequest getCurrentUsersProfileRequest = spotifyApi.getCurrentUsersProfile().build();
+
+        try {
+            final User user = getCurrentUsersProfileRequest.execute();
+            System.out.println("User found: " + user);
+            return user;
+        } catch (IOException | SpotifyWebApiException | org.apache.hc.core5.http.ParseException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        final User userToReturn = null;
+        return userToReturn;
+    }
 }

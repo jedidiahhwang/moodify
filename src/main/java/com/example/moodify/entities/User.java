@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,20 +23,20 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Determines how the unique ID will be generated. Designates one column to hold unique ID.
     private Long id;
 
-    @Column(unique = true)
+    @Column
     private String username;
 
     @Column
-    private String firstname;
+    private String actualName;
 
     @Column
-    private String lastname;
-
-    @Column(unique = true)
     private String email;
 
-    @Column
-    private String password;
+    @Column(columnDefinition = "text")
+    private String imageUrl;
+
+    @Column(columnDefinition = "text")
+    private String accountUrl;
 
     /*
         REVIEW THESE ANNOTATION PROPERTIES
@@ -63,15 +64,15 @@ public class User {
 
     public User(UserDto userDto) {
         if(userDto.getUsername() != null &&
-            userDto.getFirstname() != null &&
-            userDto.getLastname() != null &&
+            userDto.getActualName() != null &&
             userDto.getEmail() != null &&
-            userDto.getPassword() != null) {
+            userDto.getImageUrl() != null &&
+            userDto.getAccountUrl() != null) {
                 this.username = userDto.getUsername();
-                this.firstname = userDto.getFirstname();
-                this.lastname = userDto.getLastname();
+                this.actualName = userDto.getActualName();
                 this.email = userDto.getEmail();
-                this.password = userDto.getPassword();
+                this.imageUrl = userDto.getImageUrl();
+                this.accountUrl = userDto.getAccountUrl();
         }
     }
 }

@@ -16,8 +16,10 @@ public class PlaylistDto implements Serializable {
     private Long id;
     private String playlistName;
     private String mood;
+    private String imageUrl;
+    private String playlistUrl;
     private UserDto userDto;
-    private Set<TrackDto> trackDtoSet = new HashSet<>(); // Set of Track data transfer objects.
+//    private Set<TrackDto> trackDtoSet = new HashSet<>(); // Set of Track data transfer objects.
 
     public PlaylistDto(Playlist playlistObj) {
         if(playlistObj.getId() != null &&

@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.awt.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,10 +25,10 @@ public class UserDto implements Serializable {
     // Create some fields representing the entity we created.
     private Long id;
     private String username;
-    private String firstname;
-    private String lastname;
+    private String actualName;
     private String email;
-    private String password;
+    private String imageUrl;
+    private String accountUrl;
     private Set<PlaylistDto> playlistDtoSet = new HashSet<>(); // Set of Playlist data transfer objects.
 
     // Create a custom constructor that makes a DTO from the associated class. Also check that fields have been filled out correctly.
@@ -36,16 +37,16 @@ public class UserDto implements Serializable {
         // General control flow - Using the entity's getter/setters, if the field is not null, make this DTO's fields equal to the userObjs.
         if(userObj.getId() != null &&
             userObj.getUsername() != null &&
-            userObj.getFirstname() != null &&
-            userObj.getLastname() != null &&
+            userObj.getActualName() != null &&
             userObj.getEmail() != null &&
-            userObj.getPassword() != null) {
+            userObj.getImageUrl() != null &&
+            userObj.getAccountUrl() != null) {
                 this.id = userObj.getId();
                 this.username = userObj.getUsername();
-                this.firstname = userObj.getFirstname();
-                this.lastname = userObj.getLastname();
+                this.actualName = userObj.getActualName();
                 this.email = userObj.getEmail();
-                this.password = userObj.getPassword();
+                this.imageUrl = userObj.getImageUrl();
+                this.accountUrl = userObj.getAccountUrl();
         }
         // Don't provide the set. You will get infinite recursion by recursively adding playlists over and over.
     }

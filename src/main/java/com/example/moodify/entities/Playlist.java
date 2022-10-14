@@ -27,6 +27,12 @@ public class Playlist {
     @Column(columnDefinition = "varchar(25)") // Don't currently know mood lengths, 25 seems decent for now.
     private String mood;
 
+    @Column(columnDefinition = "text")
+    private String imageUrl;
+
+    @Column(columnDefinition = "text")
+    private String playlistUrl;
+
     @ManyToOne // Relationship from playlists to users.
     @JsonBackReference // Prevents infinite recursion when delivering JSON through a RESTful endpoint.
     private User user;

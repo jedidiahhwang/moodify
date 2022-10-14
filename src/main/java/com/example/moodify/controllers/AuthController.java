@@ -1,5 +1,8 @@
 package com.example.moodify.controllers;
 
+import com.example.moodify.dtos.UserDto;
+import com.example.moodify.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import se.michaelthelin.spotify.SpotifyApi;
 import se.michaelthelin.spotify.SpotifyHttpManager;
@@ -11,11 +14,17 @@ import se.michaelthelin.spotify.model_objects.specification.User;
 import se.michaelthelin.spotify.requests.authorization.authorization_code.AuthorizationCodeRequest;
 import se.michaelthelin.spotify.requests.authorization.authorization_code.AuthorizationCodeUriRequest;
 import se.michaelthelin.spotify.requests.data.personalization.simplified.GetUsersTopArtistsRequest;
+import se.michaelthelin.spotify.requests.data.search.SearchItemRequest;
 import se.michaelthelin.spotify.requests.data.users_profile.GetCurrentUsersProfileRequest;
+import se.michaelthelin.spotify.model_objects.specification.Image;
+import se.michaelthelin.spotify.model_objects.special.SearchResult;
 
 import javax.servlet.http.HttpServletResponse;
+import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
+import java.text.ParseException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/spotify")
@@ -26,6 +35,9 @@ public class AuthController {
     // For simplicity's sake, just keeping clientId and clientSecret public. Will transfer in the future.
     private static final String clientId = "af30ddd8276e43cba9dcd2581010f381";
     private static final String clientSecret = "c0fceccc1b3f48d682e4b0d8fb0b0261";
+
+    @Autowired
+    private UserService userService;
 
     /*
         The following code is implemented using the Spotify Web Api tutorial.
@@ -108,18 +120,40 @@ public class AuthController {
      }
 
 
-    @GetMapping(value="current-user-profile")
-    public User getCurrentUserProfile() {
+    @GetMapping(value = "current-user-profile")
+    public List<String> getCurrentUserProfile() {
         final GetCurrentUsersProfileRequest getCurrentUsersProfileRequest = spotifyApi.getCurrentUsersProfile().build();
+
+        UserDto userDto = new UserDto();
 
         try {
             final User user = getCurrentUsersProfileRequest.execute();
-            System.out.println("User found: " + user);
-            return user;
+            Image[] images = user.getImages();
+            userDto.setUsername(user.getId());
+            userDto.setActualName(user.getDisplayName());
+            userDto.setEmail(user.getEmail());
+            userDto.setImageUrl(images[0].getUrl());
+            userDto.setAccountUrl(user.getHref());
+            return userService.addUser(userDto);
         } catch (IOException | SpotifyWebApiException | org.apache.hc.core5.http.ParseException e) {
             System.out.println("Error: " + e.getMessage());
         }
-        final User userToReturn = null;
-        return userToReturn;
+
+        return null;
+    }
+
+    @GetMapping(value = "get-artist")
+    public SearchResult getArtist(@RequestParam("mood") String mood, @RequestParam("genre") String genre) {
+        System.out.println(mood + genre);
+        final SearchItemRequest searchItemRequest = spotifyApi.searchItem(genre, "playlist").build();
+
+        try {
+         final SearchResult searchResult = searchItemRequest.execute();
+         return searchResult;
+        } catch (IOException | SpotifyWebApiException | org.apache.hc.core5.http.ParseException e) {
+         System.out.println("Error: " + e.getMessage());
+        }
+
+        return null;
     }
 }

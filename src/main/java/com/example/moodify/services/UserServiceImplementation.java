@@ -44,11 +44,20 @@ public class UserServiceImplementation implements UserService {
     public List<String> addUser(UserDto userDto) {
         List<String> response = new ArrayList<>();
         User user = new User(userDto);
-
+        System.out.println("-------userDto-------");
+        System.out.println(userDto);
+        System.out.println("-------user-------");
+        System.out.println(user);
         // saveAndFlush() is from Spring Data JPA and will "save and flush" your data to the DB.
         // Refer to the following link: https://stackoverflow.com/questions/21203875/difference-between-save-and-saveandflush-in-spring-data-jpa
         userRepository.saveAndFlush(user);
 
+        response.add(user.getActualname());
+        response.add(user.getUsername());
+        response.add(user.getEmail());
+        response.add(user.getAccountUrl());
+        response.add(user.getImageUrl());
+        response.add(Long.toString(user.getId()));
         response.add("User added successfully");
         return response;
     }
@@ -60,16 +69,16 @@ public class UserServiceImplementation implements UserService {
 
         // Optionals help us avoid NullPointerExceptions. Optionals give the compiler a choice to accept it whether it's empty or not.
         Optional<User> userOptional = userRepository.findByUsername(userDto.getUsername());
-        if(userOptional.isPresent()) {
-            if(passwordEncoder.matches(userDto.getPassword(), userOptional.get().getPassword())) {
-                response.add("User login successful");
-                response.add(String.valueOf(userOptional.get().getId()));
-            } else {
-                response.add("Username or password incorrect");
-            }
-        } else {
-            response.add("Username or password incorrect");
-        }
+//        if(userOptional.isPresent()) {
+//            if(passwordEncoder.matches(userDto.getPassword(), userOptional.get().getPassword())) {
+//                response.add("User login successful");
+//                response.add(String.valueOf(userOptional.get().getId()));
+//            } else {
+//                response.add("Username or password incorrect");
+//            }
+//        } else {
+//            response.add("Username or password incorrect");
+//        }
         return response;
     }
 }

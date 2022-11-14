@@ -10,16 +10,26 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(originPatterns = "http://localhost:8080")
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/playlist")
 public class PlaylistController {
 
     @Autowired
     private PlaylistService playlistService;
 
-    @PostMapping("/addPlaylist")
-    public void addPlaylist(@RequestBody PlaylistDto playlistDto, @RequestParam Long userId) {
+    @GetMapping("/getPlaylists/{userId}")
+    private List<PlaylistDto> getPlaylistByUser(@PathVariable Long userId) {
+        System.out.println("getPlaylistByUser endpoint hit");
+        return playlistService.getAllPlaylistsByUserId(userId);
+    }
+
+    @PostMapping("/addPlaylist/{userId}")
+    public List<PlaylistDto> addPlaylist(@RequestBody PlaylistDto playlistDto, @PathVariable Long userId) {
+        System.out.println("------userId-------");
+        System.out.println(userId);
+        System.out.println("-----playlistDto------");
+        System.out.println(playlistDto);
         playlistService.addPlaylist(playlistDto, userId);
+        return playlistService.getAllPlaylistsByUserId(userId);
     }
 }

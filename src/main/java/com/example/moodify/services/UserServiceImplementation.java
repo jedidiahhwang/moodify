@@ -52,7 +52,7 @@ public class UserServiceImplementation implements UserService {
         // Refer to the following link: https://stackoverflow.com/questions/21203875/difference-between-save-and-saveandflush-in-spring-data-jpa
         userRepository.saveAndFlush(user);
 
-        response.add(user.getActualname());
+        response.add(user.getActualName());
         response.add(user.getUsername());
         response.add(user.getEmail());
         response.add(user.getAccountUrl());

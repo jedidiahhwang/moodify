@@ -142,7 +142,7 @@ public class AuthController {
         return null;
     }
 
-    @GetMapping(value = "get-artist")
+    @GetMapping(value = "get-spotify-playlists")
     public SearchResult getArtist(@RequestParam("mood") String mood, @RequestParam("genre") String genre) {
         System.out.println(mood + genre);
         final SearchItemRequest searchItemRequest = spotifyApi.searchItem(genre, "playlist").build();

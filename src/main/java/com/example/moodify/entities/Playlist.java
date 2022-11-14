@@ -46,10 +46,22 @@ public class Playlist {
     private Set<Track> trackslist = new HashSet<>();
 
     public Playlist(PlaylistDto playlistDto) {
-        if(playlistDto.getPlaylistName() != null &&
-            playlistDto.getMood() != null) {
-                this.playlistName = playlistDto.getPlaylistName();
-                this.mood = playlistDto.getMood();
+//        if(playlistDto.getPlaylistName() != null &&
+//            playlistDto.getMood() != null) {
+//                this.playlistName = playlistDto.getPlaylistName();
+//                this.mood = playlistDto.getMood();
+//        }
+        if(playlistDto.getPlaylistName() != null) {
+            this.playlistName = playlistDto.getPlaylistName();
+        }
+        if(playlistDto.getPlaylistUrl() != null) {
+            this.playlistUrl = playlistDto.getPlaylistUrl();
+        }
+        if(playlistDto.getMood() != null) {
+            this.mood = playlistDto.getMood();
+        }
+        if(playlistDto.getImageUrl() != null) {
+            this.imageUrl = playlistDto.getImageUrl();
         }
     }
 }

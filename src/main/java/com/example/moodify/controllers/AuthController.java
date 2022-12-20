@@ -8,15 +8,14 @@ import se.michaelthelin.spotify.SpotifyApi;
 import se.michaelthelin.spotify.SpotifyHttpManager;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 import se.michaelthelin.spotify.model_objects.credentials.AuthorizationCodeCredentials;
-import se.michaelthelin.spotify.model_objects.specification.Artist;
-import se.michaelthelin.spotify.model_objects.specification.Paging;
-import se.michaelthelin.spotify.model_objects.specification.User;
+import se.michaelthelin.spotify.model_objects.specification.*;
+import se.michaelthelin.spotify.model_objects.specification.Image;
 import se.michaelthelin.spotify.requests.authorization.authorization_code.AuthorizationCodeRequest;
 import se.michaelthelin.spotify.requests.authorization.authorization_code.AuthorizationCodeUriRequest;
 import se.michaelthelin.spotify.requests.data.personalization.simplified.GetUsersTopArtistsRequest;
+import se.michaelthelin.spotify.requests.data.playlists.GetPlaylistsItemsRequest;
 import se.michaelthelin.spotify.requests.data.search.SearchItemRequest;
 import se.michaelthelin.spotify.requests.data.users_profile.GetCurrentUsersProfileRequest;
-import se.michaelthelin.spotify.model_objects.specification.Image;
 import se.michaelthelin.spotify.model_objects.special.SearchResult;
 
 import javax.servlet.http.HttpServletResponse;
@@ -148,10 +147,22 @@ public class AuthController {
         final SearchItemRequest searchItemRequest = spotifyApi.searchItem(genre, "playlist").build();
 
         try {
-         final SearchResult searchResult = searchItemRequest.execute();
-         return searchResult;
+         return searchItemRequest.execute();
         } catch (IOException | SpotifyWebApiException | org.apache.hc.core5.http.ParseException e) {
          System.out.println("Error: " + e.getMessage());
+        }
+
+        return null;
+    }
+
+    @GetMapping("/getPlaylistTracks/{playlistId}")
+    private Paging<PlaylistTrack> getPlaylistTracks(@PathVariable String playlistId) {
+        final GetPlaylistsItemsRequest getPlaylistsItemsRequest = spotifyApi.getPlaylistsItems(playlistId).build();
+
+        try {
+            return getPlaylistsItemsRequest.execute();
+        } catch (IOException | SpotifyWebApiException | org.apache.hc.core5.http.ParseException e) {
+            System.out.println("Error: " + e.getMessage());
         }
 
         return null;

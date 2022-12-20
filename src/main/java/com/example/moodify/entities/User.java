@@ -3,9 +3,7 @@ package com.example.moodify.entities;
 import com.example.moodify.dtos.UserDto;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.awt.*;
@@ -49,6 +47,8 @@ public class User {
             i. MERGE will merge the existing data in the table with the data in my object (sync to database). Think of saving (loosely).
             ii. PERSIST will create new records from the object in the database. Makes a transient instance persistent.
      */
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     /*
         Why a @OneToMany relationship? What's the difference with @ManyToOne

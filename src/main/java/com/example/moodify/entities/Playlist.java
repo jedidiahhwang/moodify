@@ -24,8 +24,8 @@ public class Playlist {
     @Column(columnDefinition = "varchar(50)", unique = true) // Playlist names are capped at 50 characters and must be unique.
     private String playlistName;
 
-    @Column(columnDefinition = "varchar(25)") // Don't currently know mood lengths, 25 seems decent for now.
-    private String mood;
+//    @Column(columnDefinition = "varchar(25)") // Don't currently know mood lengths, 25 seems decent for now.
+//    private String mood;
 
     @Column(columnDefinition = "text")
     private String imageUrl;
@@ -37,29 +37,32 @@ public class Playlist {
     @JsonBackReference // Prevents infinite recursion when delivering JSON through a RESTful endpoint.
     private User user;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinTable(
-            name = "PlaylistJoinLike",
-            joinColumns = {@JoinColumn(name = "playlistId")},
-            inverseJoinColumns = {@JoinColumn(name = "trackId")}
-    )
-    private Set<Track> trackslist = new HashSet<>();
+    @ManyToOne // Relationship from playlist to genre.
+    @JsonBackReference
+    private Genre genre;
+
+    @ManyToOne // Relationship from playlist to mood.
+    @JsonBackReference
+    private Mood mood;
+
+//    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+//    @JoinTable(
+//            name = "PlaylistJoinLike",
+//            joinColumns = {@JoinColumn(name = "playlistId")},
+//            inverseJoinColumns = {@JoinColumn(name = "trackId")}
+//    )
+//    private Set<Track> trackslist = new HashSet<>();
 
     public Playlist(PlaylistDto playlistDto) {
-//        if(playlistDto.getPlaylistName() != null &&
-//            playlistDto.getMood() != null) {
-//                this.playlistName = playlistDto.getPlaylistName();
-//                this.mood = playlistDto.getMood();
-//        }
         if(playlistDto.getPlaylistName() != null) {
             this.playlistName = playlistDto.getPlaylistName();
         }
         if(playlistDto.getPlaylistUrl() != null) {
             this.playlistUrl = playlistDto.getPlaylistUrl();
         }
-        if(playlistDto.getMood() != null) {
-            this.mood = playlistDto.getMood();
-        }
+//        if(playlistDto.getMood() != null) {
+//            this.mood = playlistDto.getMood();
+//        }
         if(playlistDto.getImageUrl() != null) {
             this.imageUrl = playlistDto.getImageUrl();
         }

@@ -1,5 +1,6 @@
 package com.example.moodify.dtos;
 
+import com.example.moodify.entities.Mood;
 import com.example.moodify.entities.Playlist;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,7 +16,6 @@ import java.util.Set;
 public class PlaylistDto implements Serializable {
     private Long id;
     private String playlistName;
-    private String mood;
     private String imageUrl;
     private String playlistUrl;
     private UserDto userDto;
@@ -35,9 +35,6 @@ public class PlaylistDto implements Serializable {
         }
         if(playlistObj.getPlaylistName() != null) {
             this.playlistName = playlistObj.getPlaylistName();
-        }
-        if(playlistObj.getMood() != null) {
-            this.mood = playlistObj.getMood();
         }
         if(playlistObj.getPlaylistUrl() != null) {
             this.playlistUrl = playlistObj.getPlaylistUrl();

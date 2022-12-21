@@ -1,8 +1,10 @@
 package com.example.moodify.services;
 
 import com.example.moodify.dtos.PlaylistDto;
+import com.example.moodify.entities.Mood;
 import com.example.moodify.entities.Playlist;
 import com.example.moodify.entities.User;
+import com.example.moodify.repositories.MoodRepository;
 import com.example.moodify.repositories.PlaylistRepository;
 import com.example.moodify.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ public class PlaylistServiceImplementation implements PlaylistService {
     private UserRepository userRepository;
 
     @Autowired
+    private MoodRepository moodRepository;
+
+    @Autowired
     private PlaylistRepository playlistRepository;
 
     @Override
@@ -34,12 +39,14 @@ public class PlaylistServiceImplementation implements PlaylistService {
     }
 
     @Override
-    public void addPlaylist(PlaylistDto playlistDto, Long userId) {
+    public void addPlaylist(PlaylistDto playlistDto, Long userId, Long moodId) {
         Optional<User> userOptional = userRepository.findById(userId);
+        Optional<Mood> moodOptional = moodRepository.findById(moodId);
 
         Playlist playlist = new Playlist(playlistDto);
         System.out.println(playlist);
         userOptional.ifPresent(playlist::setUser);
+        moodOptional.ifPresent(playlist::setMood);
         playlistRepository.saveAndFlush(playlist);
 
     }

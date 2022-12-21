@@ -13,7 +13,6 @@ import java.io.Serializable;
 public class GenreDto implements Serializable {
     private Long id;
     private String genre;
-    private TrackDto trackDto;
 
     public GenreDto(Genre genreObj) {
         if(genreObj.getId() != null &&

@@ -68,17 +68,20 @@ public class UserServiceImplementation implements UserService {
         List<String> response = new ArrayList<>();
 
         // Optionals help us avoid NullPointerExceptions. Optionals give the compiler a choice to accept it whether it's empty or not.
-        Optional<User> userOptional = userRepository.findByUsername(userDto.getUsername());
-//        if(userOptional.isPresent()) {
-//            if(passwordEncoder.matches(userDto.getPassword(), userOptional.get().getPassword())) {
-//                response.add("User login successful");
-//                response.add(String.valueOf(userOptional.get().getId()));
-//            } else {
-//                response.add("Username or password incorrect");
-//            }
-//        } else {
-//            response.add("Username or password incorrect");
-//        }
+        Optional<User> userOptional = userRepository.findByEmail(userDto.getEmail());
+        if(userOptional.isPresent()) {
+//            response.add("User logging in");
+            User user = userOptional.get();
+            response.add(user.getActualName());
+            response.add(user.getUsername());
+            response.add(user.getEmail());
+            response.add(user.getAccountUrl());
+            response.add(user.getImageUrl());
+            response.add(Long.toString(user.getId()));
+            response.add("User logged in successfully");
+        } else {
+            response.add("User not found");
+        }
         return response;
     }
 }

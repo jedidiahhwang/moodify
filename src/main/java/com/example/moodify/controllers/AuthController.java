@@ -133,7 +133,14 @@ public class AuthController {
             userDto.setEmail(user.getEmail());
             userDto.setImageUrl(images[0].getUrl());
             userDto.setAccountUrl(user.getHref());
-            return userService.addUser(userDto);
+
+            // Check if user currently exists in database.
+            List<String> response = userService.userLogin(userDto);
+            if(response.get(0).equals("User not found")) {
+                return userService.addUser(userDto);
+            } else {
+                return response;
+            }
         } catch (IOException | SpotifyWebApiException | org.apache.hc.core5.http.ParseException e) {
             System.out.println("Error: " + e.getMessage());
         }

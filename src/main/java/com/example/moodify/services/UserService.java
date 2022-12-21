@@ -4,6 +4,7 @@ import com.example.moodify.dtos.UserDto;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import com.example.moodify.entities.User;
 
 public interface UserService {
     /*

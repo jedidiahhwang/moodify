@@ -26,14 +26,14 @@ public class PlaylistController {
     }
 
     @PostMapping("/addPlaylist")
-    public List<PlaylistDto> addPlaylist(@RequestBody PlaylistDto playlistDto, @RequestParam("userId") Long userId, @RequestParam("moodId") Long moodId) {
+    public List<PlaylistDto> addPlaylist(@RequestBody PlaylistDto playlistDto, @RequestParam("userId") Long userId, @RequestParam("moodId") Long moodId, @RequestParam("genreId") Long genreId) {
         System.out.println("------userId-------");
         System.out.println(userId);
         System.out.println("------moodId-------");
         System.out.println(moodId);
         System.out.println("-----playlistDto------");
         System.out.println(playlistDto);
-        playlistService.addPlaylist(playlistDto, userId, moodId);
+        playlistService.addPlaylist(playlistDto, userId, moodId, genreId);
         return playlistService.getAllPlaylistsByUserId(userId);
     }
 }

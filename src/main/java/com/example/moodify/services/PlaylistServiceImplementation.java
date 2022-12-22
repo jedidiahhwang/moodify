@@ -1,9 +1,11 @@
 package com.example.moodify.services;
 
 import com.example.moodify.dtos.PlaylistDto;
+import com.example.moodify.entities.Genre;
 import com.example.moodify.entities.Mood;
 import com.example.moodify.entities.Playlist;
 import com.example.moodify.entities.User;
+import com.example.moodify.repositories.GenreRepository;
 import com.example.moodify.repositories.MoodRepository;
 import com.example.moodify.repositories.PlaylistRepository;
 import com.example.moodify.repositories.UserRepository;
@@ -26,6 +28,9 @@ public class PlaylistServiceImplementation implements PlaylistService {
     private MoodRepository moodRepository;
 
     @Autowired
+    private GenreRepository genreRepository;
+
+    @Autowired
     private PlaylistRepository playlistRepository;
 
     @Override
@@ -39,14 +44,16 @@ public class PlaylistServiceImplementation implements PlaylistService {
     }
 
     @Override
-    public void addPlaylist(PlaylistDto playlistDto, Long userId, Long moodId) {
+    public void addPlaylist(PlaylistDto playlistDto, Long userId, Long moodId, Long genreId) {
         Optional<User> userOptional = userRepository.findById(userId);
         Optional<Mood> moodOptional = moodRepository.findById(moodId);
+        Optional<Genre> genreOptional = genreRepository.findById(genreId);
 
         Playlist playlist = new Playlist(playlistDto);
         System.out.println(playlist);
         userOptional.ifPresent(playlist::setUser);
         moodOptional.ifPresent(playlist::setMood);
+        genreOptional.ifPresent(playlist::setGenre);
         playlistRepository.saveAndFlush(playlist);
 
     }

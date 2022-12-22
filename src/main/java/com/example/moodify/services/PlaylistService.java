@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface PlaylistService {
     List<PlaylistDto> getAllPlaylistsByUserId(Long userId);
 
-    void addPlaylist(PlaylistDto playlistDto, Long userId, Long moodId);
+    void addPlaylist(PlaylistDto playlistDto, Long userId, Long moodId, Long genreId);
 
 //    Optional<PlaylistDto> getPlaylistById(Long playlistId);
 }

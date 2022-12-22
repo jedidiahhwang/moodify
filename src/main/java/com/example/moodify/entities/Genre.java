@@ -26,5 +26,5 @@ public class Genre {
     @ToString.Exclude
     @JsonManagedReference
     @OneToMany(mappedBy = "genre", fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    private Set<Playlist> playlistSet = new HashSet<>();
+    private Set<Playlist> playlistSet;
 }

@@ -67,7 +67,7 @@ public class AuthController {
         // From the wrapper. Formats the URI that will prompt the user to authorize with their Spotify account.
         AuthorizationCodeUriRequest authorizationCodeUriRequest = spotifyApi.authorizationCodeUri()
                 // Refer to Spotify docs for the following scopes (cna interact with them).
-                .scope("user-read-private, user-read-email, user-top-read")
+                .scope("user-read-private, user-read-email, user-top-read, streaming, user-read-playback-state, user-modify-playback-state, user-library-read, user-library-modify")
                 // Provides the dialog box from Spotify.
                 .show_dialog(true)
                 // Now build this URI.
@@ -137,8 +137,11 @@ public class AuthController {
             // Check if user currently exists in database.
             List<String> response = userService.userLogin(userDto);
             if(response.get(0).equals("User not found")) {
-                return userService.addUser(userDto);
+                List<String> registerResponse = userService.addUser(userDto);
+                registerResponse.add(spotifyApi.getAccessToken());
+                return registerResponse;
             } else {
+                response.add(spotifyApi.getAccessToken());
                 return response;
             }
         } catch (IOException | SpotifyWebApiException | org.apache.hc.core5.http.ParseException e) {
